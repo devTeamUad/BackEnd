@@ -4,12 +4,12 @@ const router = express.Router();
 
 router.post("/", controllers.affecterServiceSurProjet);
 
-router.get("/:id", controllers.consulterServicesDunprojet);
+router.get("/:id", controllers.consulterServicesDunprojet); // cete route n4est plus necessaire
 
 router.get("/Rechercher/:id", controllers.RechercherFacturationParId);
 
 router.get(
-  "/projet/service",
+  "/",
   controllers.RechercherUneFacturationParProjetEtService
 );
 
@@ -19,6 +19,6 @@ router.put("/pourcent/:id", controllers.modifierPourcentageAvancement);
 
 router.put("/modifier/statut/:id", controllers.modifierStatut);
 
-router.put("/modifier/archive/yes/:id", controllers.archiverFacturation);
+router.put("/modifier/archive/:id", controllers.archiverFacturation);
 
 module.exports = router;

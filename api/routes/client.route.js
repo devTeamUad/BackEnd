@@ -1,10 +1,12 @@
 const controllers = require("../controllers/clientController");
 const express = require("express");
+const Access  = require("../middlewares/Access")
 const router = express.Router();
+
 
 router.post("/", controllers.creerClient);
 
-router.get("/", controllers.consulterTousLesClients);
+router.get("/", Access.Token, controllers.consulterTousLesClients);
 
 router.get("/recherche/", controllers.rechercherclientparNom);
 

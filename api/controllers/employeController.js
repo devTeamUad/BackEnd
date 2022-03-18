@@ -16,11 +16,13 @@ exports.creerEmploye = (req, res) => {
         prenom: req.body.prenom,
         telephone: req.body.telephone,
         email: req.body.email,
-        grade: req.body.grade,
-        poste: req.body.poste,
-        aptitude: req.body.aptitude,
         sexe: req.body.sexe,
         dateNaissance: req.body.dateNaissance,
+        date_embauche: req.body.date_embauche,
+        pays: req.body.pays,
+        ville: req.body.ville,
+        quartier: req.body.quartier,
+        salaire: req.body.salaire,
       });
 
       creer
@@ -43,7 +45,6 @@ exports.consulterTousLesEmployes = (req, res) => {
       .sort({
         nom: 1,
       })
-      .select("nom prenom email telephone poste grade aptitude sexe")
       .exec()
       .then((positif) => {
         return res.status(200).json(positif);
@@ -79,8 +80,9 @@ exports.rechercherEmployes = (req, res) => {
 };
 
 exports.rechercherEmployeparNom = (req, res) => {
+  const nom = req.params.nom;
   Employe.find({
-    nom: req.body.nom,
+    nom: nom,
   })
     .exec()
     .then((positif) => {
@@ -99,11 +101,14 @@ exports.modifierEmploye = (req, res) => {
   if (req.body.prenom) modifier.prenom = req.body.prenom;
   if (req.body.telephone) modifier.telephone = req.body.telephone;
   if (req.body.email) modifier.email = req.body.email;
-  if (req.body.grade) modifier.grade = req.body.grade;
-  if (req.body.poste) modifier.poste = req.body.poste;
+  if (req.body.pays) modifier.pays = req.body.pays;
+  if (req.body.ville) modifier.ville = req.body.ville;
+  if (req.body.quartier) modifier.quartier = req.body.quartier;
   if (req.body.sexe) modifier.sexe = req.body.sexe;
   if (req.body.dateNaissance) modifier.dateNaissance = req.body.dateNaissance;
   if (req.body.archive) modifier.archive = req.body.archive;
+  if (req.body.salaire) modifier.salaire = req.body.salaire;
+  if (req.body.commentaire) modifier.commentaire = req.body.commentaire;
 
   Employe.updateOne({ _id: id }, { $set: modifier })
     .then((positif) => {

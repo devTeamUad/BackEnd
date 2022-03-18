@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "C:\\Users\\HOME-PC\\Desktop\\uadfront"
+		},
+		{
+			"path": "..\\..\\..\\uad-front"
+		},
+		{
+			"path": "..\\.."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "interface"
+	}
+}

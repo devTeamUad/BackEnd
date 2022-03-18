@@ -1,7 +1,7 @@
 const { projetService } = require("../models");
 const models = require("../models");
-const Projet = require("../models/Projet");
 const ProjetService = models.projetService;
+const Projet = models.projet;
 
 exports.affecterServiceSurProjet = (req, res) => {
   const creer = new projetService({
@@ -53,23 +53,41 @@ exports.RechercherFacturationParId = (req, res) => {
 };
 
 exports.RechercherUneFacturationParProjetEtService = (req, res) => {
-  const proj = req.query.idp;
-  const serv = req.query.ids;
-
-  if (req.query.idp || req.query.ids) {
-    ProjetService.find({
-      projet: proj,
-      service: serv,
-    })
+  const querry = {};
+  if(req.query.idp ) querry.project = req.query.idp;
+  if(req.query.ids ) querry.service = req.query.ids;
+  
+  
+    ProjetService.find(querry)
       .populate("projet service")
       .exec()
       .then((positif) => {
-        return res.status(200).json(positif);
+        try{
+          let result = [];
+          positif.map((item)=>{
+          Projet.find({_id: item.projet._id})
+          .populate("client chef")
+          .exec()
+          .then((res)=>{
+            item.projet = res[0];
+            console.log(item.projet);
+            result.push(item) 
+          })
+
+        })
+        setTimeout(()=>{
+          return res.status(200).json(result);
+        },1000)
+        }catch(ex){
+          console.log(ex);
+        }
+       
+        
       })
       .catch((negatif) => {
         return res.status(500).json(negatif);
       });
-  }
+
 };
 
 exports.modifierFacturation = (req, res) => {
@@ -81,7 +99,7 @@ exports.modifierFacturation = (req, res) => {
   if (req.body.pourcentage_avancement)
     modifier.pourcentage_avancement = req.body.pourcentage_avancement;
   if (req.body.poucentage_reglement_facture_totale)
-    modifier.oucentage_reglement_facture_totale =
+    modifier.poucentage_reglement_facture_totale =
       req.body.oucentage_reglement_facture_totale;
   if (req.body.statut) modifier.statut = req.body.statut;
   if (req.body.date_contrat) modifier.date_contrat = req.body.date_contrat;
